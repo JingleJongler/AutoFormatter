@@ -1,0 +1,221 @@
+<!--Web base shit-->
+<!DOCTYPE html>
+<html lang="en">
+<!-- I have all the dependencies downloaded i Just use the digital ones for submission so it will work regardless of what environment it is run on-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue + Bootstrap Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Joanne Woltanski/Davis">
+    <!--In middle of name change-->
+    <!-- VueJS  auto
+       <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    -->
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <!----Vuetify-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 4.4.1 CSS
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"> -->
+    <style>
+        #terminal {
+            background: #111;
+            color: #0f0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2em;
+            overflow-y: auto;
+            height: 30vh;
+        }
+        /*FOR THE LOVE OF GOD DO NOT DELETE THIS CONTROL THE TERMINAL SPACING */
+        
+        #terminal p {
+            margin: 0;
+            line-height: 1.2em;
+        }
+        
+        #command-line-input,
+        #action-log {
+            background: #3a3939;
+            color: #0f0;
+            margin-top: -10px;
+            width: 100%;
+            margin-bottom: -10px;
+        }
+        
+        #responsiveGameCanvas {
+            border: 2px solid black;
+            width: 50vmax;
+            height: 25vmax;
+        }
+        /*I wanted to get the vibs */
+        
+        #command-line-input input,
+        label {
+            color: #0f0 !important;
+        }
+    </style>
+</head>
+
+
+<body>
+    <!--https://getbootstrap.com/docs/5.0/components/navbar/-->
+    <div class="container-fluid m-3 border p-2 px-5 bg-warning">
+        <nav id="nav-menu" class="">
+
+            <a class="navbar-brand" href="#">NavBar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="nav-bar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2">
+                    <li class="nav-item expand-sm border">
+                        <a class="nav-link active" href="#">Index</a></li>
+                    <!--Want to seperate into sections maybe
+                        lIKE have the 2 example ones
+                        and then have a part where you click a button and it reveals the game part
+                        aka
+                        If button state is false
+                        Hide
+                        -->
+                    <li class="nav-item">
+                        <a>
+
+                        </a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </nav>
+
+    </div>
+    <!--To support portrait, Landscape for mobile aswell as desktop, used a default as col-8 forproit, col-md-6 for landscape  col-lg-4 desktop-->
+    <!--Regular Container used instead of fluid due to fluid always beeing 100% of view-->
+    <div id="app" class="container  mx-5  bg-light">
+        <div class="row justify-content-start">
+            <div class="col-12 col-md-8 col-lg-8 mx-0">
+                <!--https://stackoverflow.com/questions/73546361/how-to-make-a-canvas-proportionally-responsive
+            
+                While working on the responsive Elements for the Portrait and Landscape Mode for the Mobile Part I found that the canvas was being an ass-->
+                <div class="canvasContainer">
+
+                    <canvas id="responsiveGameCanvas" class="canvas bg-primary"></canvas>
+                    <!--Area for the canvas ADD DYNAMIC UPDATING -->
+                </div>
+            </div>
+            <div class="col-8 col-md-4 col-lg-4 mx-0 ">
+                <!-- hate the use of v car
+                <v-card-title>Status</v-card-title>
+                <v-card-text>
+          
+
+                <div>Status: {{ robot.status }}</div>
+                <div>Goal: {{ goal }}</div>
+                <div>Steps: {{ steps }}</div>
+                <div>Inventory: {{ inventory.join(',') }}</div>
+                </v-card-text>
+            </v-card>-->
+                <!--Command Terminal replication Looks fancy and is easier to deal with -->
+                <!--Below uses VUERTIRFY-->
+                <v-card class="m-0 " id="terminal ">
+                    <v-card-title>Command</v-card-title>
+                    <v-card-text dense id="command-line-input " class="mb-0 ">
+                        <!--FIGURE OUT WHAT THE FUCK IS WITH THE SPACING IT IS EVILLL-->
+                        <v-text-field v-model="command " hide-details label="Command " dense @keyup.enter="handleCommand "></v-text-field>
+                        <p v-for="(line,index) in terminalLog.slice().reverse() " :key="index ">{{ line }}</p>
+
+                    </v-card-text>
+                    <v-btn color="warning " type="reset ">Submit</v-btn>
+                </v-card>
+            </div>
+
+        </div>
+
+        <!-- Vue app content IN HERE 
+        <h1 class="mb-4 ">Robot Game </h1>
+        <div class="col border m-0 mb-2 ">
+            <div>Status: <span id="robot-status ">Missing wheel</span></div>
+            <div>Goal: <span id="goal ">Repair wheel</span></div>
+            <div>Steps: <span id="steps ">0</span></div>
+        </div>
+        <div class="row ">
+        
+        <div class="game-container col border m-3 ">
+            <canvas id="game-canvas " width="400 " height="200 "></canvas>
+        </div>
+        <div class="sidebar ">
+            <h5>Robot Control Terminal</h5>
+            <div class="terminal ">
+                <form id="command-line-form ">
+                    <input type="text " id="command-line-input ">
+                    <button type="submit " class="btn btn-warning ">Submit Info</button>
+            </form>
+    </div>
+    </div>
+    </div>
+    -->
+
+        <!--Start with Predefined things-->
+        <!-- FIRST LETS BUILD THE SITE-->
+
+
+        <!-----
+
+
+
+
+         ____________________________________________________________
+        |             |                              |              |
+        |             |                              |              |
+        |             |                              |              |
+        |_____________|______________________________|______________|
+        |                                                           |
+        |                                                           |
+        |                                                           |
+        |      Robot Game                                                     |
+        |                                                           |
+        |          ______________________________________           |
+        |          |                                    |           |
+        |          |                                    |           |
+        |          |                                    |           |
+        |          |          Game                      |           |
+        |          |                                    |           |
+        |          |                                    |           |
+        |          |____________________________________|           |
+        |          |___SUBMIT(CODE OIR THIN  |________|             |
+        |                                                           |
+        |       Input details                                                    |
+        |                                                           |
+        |        Like a command box like cmd line that controls what happens,
+        any info put hewre will auto input intpo the game                                                    |
+        |                                                           |
+        |                                                           |
+        |                                                           |
+        ___________________________________________________________ |
+
+
+
+
+
+
+-->
+
+        <!-- Example Temp Vue binding -->
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js "></script>
+
+    <script src="app.js "></script>
+    <!-- Vue App Logic -->
+
+</body>
+
+</html>
