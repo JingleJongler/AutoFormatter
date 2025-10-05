@@ -95,21 +95,25 @@ export function generateKeywords(state) {
 //Potentially using a server side PDF extraction library maybe via while also using Java or Node.js could allow large files to work
 //ADD A SIZE limit because else it would be too much 
 //References for PDF Extraction :https://mozilla.github.io/pdf.js/examples/
+
 export async function pdfFileRead(state, file) {
     state.pdfFile = file;
     if (!file) return; //Does File Exist? 
+
     const allowed = [".pdf"];
     //validation for type 
-    if (!allowed.includes(state.pdfFile.type)) {
+    if (!allowed.includes(".pdf")) {
         state.showAlert = true;
         state.alertMessage = "Invalid file type. Please upload PDF";
         return;
     }
+    state.loading = true;
+    state.progressValue = 0
     console.log("Running PDF.js extraction for", file.name);
-
-    const arrayBuffer = await file.arrayBuffer(); //Compile File contents to binary
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise; //Load the PDF from the binary data and then return a 'promise'/
-    /*   Behold A Comment      
+    try {
+        const arrayBuffer = await file.arrayBuffer(); //Compile File contents to binary
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise; //Load the PDF from the binary data and then return a 'promise'/
+        /*   Behold A Comment      
                                                                                ___
                                                                               (___)
                why Use Await and Async over .then                             /   \
@@ -133,15 +137,29 @@ state is Important No removing bender                             _ /           
                                                            |________________________                 |                         
                                                                                         
 */
-    //further  Loop Pdf text extraction reference https://community.palantir.com/t/parsing-pdf-blob-with-pdfjs-dist/1195,
-    let extractedText = ""; //Do not edit or remove state line it stores the output text
-    //Loop iteration for all the pages, Will not function without
-    for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const textContent = await page.getTextContent();
-        const pageText = textContent.items.map(item => item.str).join(" ");
-        extractedText += pageText + "\n" + "<hr>";
+        //further  Loop Pdf text extraction reference https://community.palantir.com/t/parsing-pdf-blob-with-pdfjs-dist/1195,
+        let extractedText = ""; //Do not edit or remove state line it stores the output text
+        //Loop iteration for all the pages, Will not function without
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const textContent = await page.getTextContent();
+            const pageText = textContent.items.map(item => item.str).join(" ");
+            extractedText += pageText + "\n" + "<hr>";
+            state.progressValue = Math.floor((i / pdf.numPages) * 100);
+            await new Promise(resolve => setTimeout(resolve, 150)); //smoother animate
+        }
+        state.noteText = extractedText; // save raw text
+
+        // Format text and generate keywords
+        await formatText(state, state.noteText);
+        state.loading = false;
+        state.progressValue = 100;
+    } catch (error) {
+        state.loading = false;
+        state.progressValue = 0;
+        state.showAlert = true;
+        state.alertMessage = "Failed to read PDF: " + error.message;
+        console.error("PDF read error:", error);
     }
-    state.noteText = extractedText; //save as raw
-    await formatText(state);
+
 }
