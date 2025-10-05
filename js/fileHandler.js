@@ -6,8 +6,9 @@ import { processFileImage, tesseractPdfRead, processFile } from './Tesseract.js'
 
 export async function loadFilesFromGithub(context) {
     try {
-        // Fetch the JSON with cache-busting
-        const response = await fetch("https://api.github.com/repos/JingleJongler/External-Data/contents");
+        // Fetch the JSON with cache-busting  
+        const response = await fetch("https://api.github.com/repos/JingleJongler/AutoFormatter/contents/External-Data");
+        //  const response = await fetch("https://api.github.com/repos/JingleJongler/External-Data/contents");
         if (!response.ok) throw new Error("Failed to fetch external files");
         //const response = await fetch("https://jinglejongler.github.io/External-Data/files.json?t=" + new Date().getTime());
         const data = await response.json();
