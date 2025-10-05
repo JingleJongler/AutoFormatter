@@ -85,7 +85,7 @@ export function generateKeywords(state) {
     // Sort phrases by frequency, highest first, then pick top 10 state is for
     state.keywords = Object.entries(phraseStore)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 10)
+        .slice(0, 20)
         .map(([phrase]) => phrase);
 }
 
