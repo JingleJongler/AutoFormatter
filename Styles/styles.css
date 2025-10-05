@@ -1,0 +1,84 @@
+  .formattedBox {
+      background-color: #FAF9EE;
+      /* light cream */
+      border-radius: 0.75rem;
+      color: #333333;
+      margin: 20px;
+  }
+  /*Custom Title color change https://stackoverflow.com/questions/49105258/change-title-color-of-bootstrap-vue-tab-title*/
+  
+  .tab-title {
+      color: #A2AF9B !important;
+  }
+  /* Initial loading error that caused two separate appearances to load looked unprofessional */
+  
+  .tabs-active {
+      background-color: #A2AF9B;
+      color: #FAF9EE;
+  }
+  /*This line must stay or else theres a weird initial loading phase, It is to prevent the Vue template expressions form being displayed raw*/
+  
+  [v-cloak] {
+      display: none;
+  }
+  /* Only apply when needed to avoid break */
+  
+  .animated {
+      will-change: transform;
+  }
+  
+  .uploadFile {
+      background-color: white !important;
+  }
+  
+  .load-bar {
+      background-color: #FAF9EE;
+      margin-top: 20px;
+  }
+  
+  .outputArea,
+  .inputArea {
+      font-family: 'Courier New', monospace;
+      line-height: 1.0;
+  }
+  /* Portrait phones Force part*/
+  
+  @media (max-width: 600px) and (min-height: 700px) {
+      #app {
+          transform: scale(0.80);
+          transform-origin: top center;
+      }
+  }
+  /* Landscape mobile and adpation for ipad phones Force part 750 1000 */
+  
+  @media (max-width: 768px) {
+      #app {
+          transform: scale(0.85);
+          transform-origin: top center;
+      }
+      .btnFeast .v-btn {
+          font-size: 0.70rem;
+      }
+  }
+  
+  .main-title {
+      background-color: #80a3bc;
+      color: #FAF9EE;
+      border-radius: 0.5rem;
+  }
+  
+  .input-card,
+  .uploadLabel {
+      background-color: #DCCFC0 !important;
+      color: #333333;
+      /* darker for readability */
+  }
+  
+  .alert-error {
+      color: #1b1313 !important;
+  }
+  
+  body {
+      background-color: #FAF9EE;
+      /* general background */
+  }
