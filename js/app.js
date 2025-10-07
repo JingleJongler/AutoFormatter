@@ -1,4 +1,4 @@
-import { initTesseract, tesseractPdfRead, processFileImage, processFile } from './Tesseract.js';
+import { initTesseract, tesseractPdfRead, processFileImage, processFile } from './tesseract.js';
 import { loadFilesFromGithub, fetchExternalFile, resetAfterError, noFileSelected, checkFileType } from './fileHandler.js';
 import { formatText, pageSplit, generateKeywords, nextPage, prevPage } from './textProcessing.js';
 import { FileList } from './components/fileList.js';

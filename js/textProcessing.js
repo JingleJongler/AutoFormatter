@@ -13,9 +13,6 @@ export function pageSplit(state, rawText) {
     tempContainer.innerHTML = formattedOutput;
 
     const pages = []; //maybe redundant val
-    ///deletle
-    //lelele
-    //ekek
 
     let currentPage = "";
     const maxCharsPerPage = 900; // Approx characters per page

@@ -1,7 +1,7 @@
-// fileHandling.js
+// fileHandler.js
 import { formatText, } from './textProcessing.js';
 
-import { processFileImage, tesseractPdfRead, processFile } from './Tesseract.js';
+import { processFileImage, tesseractPdfRead, processFile } from './tesseract.js';
 
 
 export async function loadFilesFromGithub(context) {
@@ -77,6 +77,7 @@ export async function fetchExternalFile(state, file) {
     }
 
 }
+//Currently
 export function noFileSelected(context) {
     context.showAlert = true;
     context.alertMessage = "No file selected.";
