@@ -18,9 +18,11 @@ export async function loadFilesFromGithub(context) {
             .filter(file => allowedTypes.some(ext => file.name.toLowerCase().endsWith(ext)))
             .map(file => ({
                 name: file.name,
-                url: file.download_url //file.url
+                url: file.download_url, //file.url
+                type: file.name.split('.').pop().toLowerCase()
             }));
         console.log("Loaded files:", context.sampleFiles);
+            
 
 
     } catch (err) {

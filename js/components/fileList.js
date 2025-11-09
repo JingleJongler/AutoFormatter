@@ -12,5 +12,6 @@ export const FileList = {
         {{ file.name }}
       </v-btn>
     </div>
+    
   `
 };

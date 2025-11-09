@@ -48,6 +48,8 @@
                                     <v-textarea id="inputDirect" v-model="noteText" aria-label="direct Input Area" type="text" class="form-control mb-0" rows="5" placeholder="Bingle Bangle Lippity Too Lippity Tad"></v-textarea>
                                     <div class="d-flex justify-content-center gap-2 my-2 btnFeast">
                                         <file-list :files="sampleFiles" @file-clicked="fetchExternalFile"></file-list>
+                                        <file-list :src="sampleFiles"></file-list>
+                                        
                                     </div>
 
                                     <!--That is a weird -->
